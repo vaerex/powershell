@@ -15,7 +15,7 @@ Param(
 $esxcli2 = get-esxcli -vmhost (get-vmhost $vmhost) -v2
 $arguments = $esxcli2.storage.core.device.physical.get.CreateArgs()
 
-$esxcli2.storage.core.device.list.invoke() | where {$_.Displayname -match "Disk" -and $_.DisplayName -notmatch "iSCSI"} | foreach -Process {
+$esxcli2.storage.core.device.list.invoke() | where {$_.Displayname -match "Disk" -and $_.DisplayName -notmatch "iSCSI"-and $_.DisplayName -notmatch "ATA"} | foreach -Process {
 $_.DisplayName -match 'naa\.\w{16}' |out-null
 write-output " Disk Device: "$matches[0]
 $arguments.device = $matches[0]
